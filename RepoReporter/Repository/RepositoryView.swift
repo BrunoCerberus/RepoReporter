@@ -36,34 +36,41 @@ import ComposableArchitecture
 
 struct RepositoryListView: View {
   let store: Store<RepositoryState, RepositoryAction>
-
+  
   var body: some View {
     WithViewStore(store) { viewStore in
-      LazyVStack {
-        ForEach(viewStore.repositories) { repository in
-          RepositoryView(store: store, repository: repository)
-            .padding([.leading, .trailing, .bottom])
+      ScrollView {
+        LazyVStack {
+          ForEach(viewStore.repositories) { repository in
+            RepositoryView(store: store, repository: repository)
+              .padding([.leading, .trailing, .bottom])
+          }
         }
+        .background(Color("rw-dark")
+                      .edgesIgnoringSafeArea([.top, .leading, .trailing]))
       }
-      .background(Color("rw-dark")
-        .edgesIgnoringSafeArea([.top, .leading, .trailing]))
+      .onAppear {
+        viewStore.send(.onAppear)
+      }
     }
   }
 }
 
 struct FavoritesListView: View {
   let store: Store<RepositoryState, RepositoryAction>
-
+  
   var body: some View {
     WithViewStore(store) { viewStore in
-      LazyVStack {
-        ForEach(viewStore.favoriteRepositories) { repository in
-          RepositoryView(store: store, repository: repository)
-            .padding([.leading, .trailing, .bottom])
+      ScrollView {
+        LazyVStack {
+          ForEach(viewStore.favoriteRepositories) { repository in
+            RepositoryView(store: store, repository: repository)
+              .padding([.leading, .trailing, .bottom])
+          }
         }
+        .background(Color("rw-dark")
+                      .edgesIgnoringSafeArea([.top, .leading, .trailing]))
       }
-      .background(Color("rw-dark")
-        .edgesIgnoringSafeArea([.top, .leading, .trailing]))
     }
   }
 }
@@ -71,48 +78,50 @@ struct FavoritesListView: View {
 struct RepositoryView: View {
   let store: Store<RepositoryState, RepositoryAction>
   let repository: RepositoryModel
-
+  
   var body: some View {
-    WithViewStore(store) { viewStore in
-      HStack {
-        Text(repository.name)
-          .font(.title)
-        Spacer()
-        Button(
-          action: { return },
-          label: {
-            if viewStore.favoriteRepositories.contains(repository) {
-              Image(systemName: "heart.fill")
-            } else {
-              Image(systemName: "heart")
-            }
-          })
-      }
-      Text(repository.description ?? "No description available")
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.top, 4)
-        .padding(.bottom, 4)
-      HStack {
+    WithViewStore(self.store) { viewStore in
+      VStack {
         HStack {
-          Image(systemName: "star.fill")
-          Text("\(repository.stars)")
+          Text(repository.name)
+            .font(.title)
+          Spacer()
+          Button(
+            action: { viewStore.send(.favoriteButtonTapped(repository)) },
+            label: {
+              if viewStore.favoriteRepositories.contains(repository) {
+                Image(systemName: "heart.fill")
+              } else {
+                Image(systemName: "heart")
+              }
+            })
         }
-        Spacer()
+        Text(repository.description ?? "No description available")
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .padding(.top, 4)
+          .padding(.bottom, 4)
         HStack {
-          Image(systemName: "arrow.triangle.branch")
-          Text("\(repository.forks)")
-        }
-        Spacer()
-        if repository.language != nil {
-          Text("\(repository.language ?? "---")")
-            .multilineTextAlignment(.center)
+          HStack {
+            Image(systemName: "star.fill")
+            Text("\(repository.stars)")
+          }
+          Spacer()
+          HStack {
+            Image(systemName: "arrow.triangle.branch")
+            Text("\(repository.forks)")
+          }
+          Spacer()
+          if repository.language != nil {
+            Text("\(repository.language ?? "---")")
+              .multilineTextAlignment(.center)
+          }
         }
       }
+      .padding()
+      .foregroundColor(Color("rw-light"))
+      .background(Color("rw-green"))
+      .cornerRadius(8.0)
     }
-    .padding()
-    .foregroundColor(Color("rw-light"))
-    .background(Color("rw-green"))
-    .cornerRadius(8.0)
   }
 }
 
