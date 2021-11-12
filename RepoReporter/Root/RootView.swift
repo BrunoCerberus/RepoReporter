@@ -38,12 +38,12 @@ struct RootView: View {
   var body: some View {
     WithViewStore(self.store.stateless) { _ in
       TabView {
-        RepositoryListView(store: Store(
-          initialState: RepositoryState(),
-          reducer: repositoryReducer,
-          environment: .live(environment: RepositoryEnvironment(
-            repositoryRequest: repositoryEffect
-          ))))
+        RepositoryListView(
+          store: store.scope(
+            state: \.repositoryState,
+            action: RootAction.repositoryAction
+          )
+        )
           .background(Color("rw-dark")
                         .edgesIgnoringSafeArea([.leading, .top, .trailing]))
           .tabItem {
@@ -51,7 +51,12 @@ struct RootView: View {
             Text("Repositories")
           }
 
-        Color.clear
+        FavoritesListView(
+          store: store.scope(
+            state: \.repositoryState,
+            action: RootAction.repositoryAction
+          )
+        )
           .tabItem {
             Image(systemName: "heart.fill")
             Text("Favorites")
