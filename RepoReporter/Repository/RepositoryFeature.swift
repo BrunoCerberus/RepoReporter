@@ -64,10 +64,25 @@ let repositoryReducer = Reducer<
 > { state, action, env in
   switch action {
   case .onAppear:
-    return .none
+    return env.repositoryRequest(env.decoder())
+      .receive(on: env.mainQueue())
+      .catchToEffect()
+      .map(RepositoryAction.dataLoaded)
   case .dataLoaded(let result):
+    switch result {
+    case .success(let repositories):
+      state.repositories = repositories
+    case .failure:
+      break
+    }
     return .none
   case .favoriteButtonTapped(let repository):
+    if state.favoriteRepositories.contains(repository) {
+      state.favoriteRepositories.removeAll { $0 == repository }
+    } else {
+      state.favoriteRepositories.append(repository)
+    }
     return .none
   }
 }
+.debug()
