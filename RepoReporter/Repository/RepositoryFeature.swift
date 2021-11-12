@@ -34,6 +34,8 @@ import Combine
 import ComposableArchitecture
 
 struct RepositoryState: Equatable {
+  var repositories: [RepositoryModel] = []
+  var favoriteRepositories: [RepositoryModel] = []
 }
 
 enum RepositoryAction: Equatable {
