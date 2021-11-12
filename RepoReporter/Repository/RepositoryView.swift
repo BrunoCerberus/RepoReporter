@@ -35,13 +35,13 @@ import Combine
 import ComposableArchitecture
 
 struct RepositoryListView: View {
-  let repositories: [RepositoryModel]
+  let store: Store<RepositoryState, RepositoryAction>
 
   var body: some View {
-    ScrollView {
+    WithViewStore(store) { viewStore in
       LazyVStack {
-        ForEach(repositories) { repository in
-          RepositoryView(repository: repository, favoriteRepositories: [])
+        ForEach(viewStore.repositories) { repository in
+          RepositoryView(store: store, repository: repository)
             .padding([.leading, .trailing, .bottom])
         }
       }
@@ -52,13 +52,13 @@ struct RepositoryListView: View {
 }
 
 struct FavoritesListView: View {
-  let favoriteRepositories: [RepositoryModel]
+  let store: Store<RepositoryState, RepositoryAction>
 
   var body: some View {
-    ScrollView {
+    WithViewStore(store) { viewStore in
       LazyVStack {
-        ForEach(favoriteRepositories) { repository in
-          RepositoryView(repository: repository, favoriteRepositories: [])
+        ForEach(viewStore.favoriteRepositories) { repository in
+          RepositoryView(store: store, repository: repository)
             .padding([.leading, .trailing, .bottom])
         }
       }
@@ -69,11 +69,11 @@ struct FavoritesListView: View {
 }
 
 struct RepositoryView: View {
+  let store: Store<RepositoryState, RepositoryAction>
   let repository: RepositoryModel
-  let favoriteRepositories: [RepositoryModel]
 
   var body: some View {
-    VStack {
+    WithViewStore(store) { viewStore in
       HStack {
         Text(repository.name)
           .font(.title)
@@ -81,7 +81,7 @@ struct RepositoryView: View {
         Button(
           action: { return },
           label: {
-            if favoriteRepositories.contains(repository) {
+            if viewStore.favoriteRepositories.contains(repository) {
               Image(systemName: "heart.fill")
             } else {
               Image(systemName: "heart")
@@ -124,6 +124,13 @@ struct RepositoryListView_Previews: PreviewProvider {
       stars: 10,
       forks: 10,
       language: "Swift")
-    RepositoryListView(repositories: [dummyRepo])
+    RepositoryListView(
+      store: Store(
+        initialState: RepositoryState(
+          repositories: [dummyRepo],
+          favoriteRepositories: [dummyRepo]
+        ),
+        reducer: repositoryReducer,
+        environment: RepositoryEnvironment()))
   }
 }
