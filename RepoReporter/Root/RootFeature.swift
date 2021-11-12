@@ -45,8 +45,11 @@ enum RootAction {
 struct RootEnvironment { }
 
 let rootReducer = Reducer<RootState, RootAction, SystemEnvironment<RootEnvironment>>.combine(
+  // pullback transforms repositoryReducer to work on RootState, RootAction and RootEnvironment.
   userReducer.pullback(
+    // repositoryReducer works on the local RepositoryState. You use a a key path to plug out the local state from the global RootState.
     state: \.userState,
+    // A case path makes the local RepositoryAction accessible from the global RootAction
     action: /RootAction.userAction,
     environment: { _ in .live(environment: UserEnvironment(userRequest: userEffect)) }
   ),
@@ -59,7 +62,11 @@ let rootReducer = Reducer<RootState, RootAction, SystemEnvironment<RootEnvironme
   ),
   Reducer { state, action, environment in
     switch action {
-    default:
+    case .userAction(let action):
+      debugPrint(".userAction executed with \(action)")
+      return .none
+    case .repositoryAction(let action):
+      debugPrint(".repositoryAction executed with \(action)")
       return .none
     }
   }
