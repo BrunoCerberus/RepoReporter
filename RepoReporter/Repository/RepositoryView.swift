@@ -140,6 +140,6 @@ struct RepositoryListView_Previews: PreviewProvider {
           favoriteRepositories: [dummyRepo]
         ),
         reducer: repositoryReducer,
-        environment: RepositoryEnvironment()))
+        environment: .dev))
   }
 }

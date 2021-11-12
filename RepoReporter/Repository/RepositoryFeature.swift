@@ -45,7 +45,17 @@ enum RepositoryAction: Equatable {
 }
 
 struct RepositoryEnvironment {
+  var repositoryRequest: (JSONDecoder) -> Effect<[RepositoryModel], APIError>
+  var mainQueue: () -> AnySchedulerOf<DispatchQueue>
+  var decoder: () -> JSONDecoder
+  
+  static let dev = RepositoryEnvironment(
+    repositoryRequest: dummyRepositoryEffect,
+    mainQueue: { .main },
+    decoder: { JSONDecoder() })
 }
+
+//The mechanism TCA uses for asynchronous calls is Effect
 
 let repositoryReducer = Reducer<
   RepositoryState,
