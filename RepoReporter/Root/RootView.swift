@@ -41,10 +41,9 @@ struct RootView: View {
         RepositoryListView(store: Store(
           initialState: RepositoryState(),
           reducer: repositoryReducer,
-          environment: RepositoryEnvironment(
-            repositoryRequest: repositoryEffect,
-            mainQueue: DispatchQueue.main.eraseToAnyScheduler,
-            decoder: { JSONDecoder() })))
+          environment: .live(environment: RepositoryEnvironment(
+            repositoryRequest: repositoryEffect
+          ))))
           .background(Color("rw-dark")
                         .edgesIgnoringSafeArea([.leading, .top, .trailing]))
           .tabItem {

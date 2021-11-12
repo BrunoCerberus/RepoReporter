@@ -132,7 +132,7 @@ struct RepositoryListView_Previews: PreviewProvider {
           favoriteRepositories: []
         ),
         reducer: repositoryReducer,
-        environment: .dev))
+        environment: .dev(environment: RepositoryEnvironment(repositoryRequest: dummyRepositoryEffect))))
       .background(Color("rw-dark")
                     .edgesIgnoringSafeArea(.all))
   }
