@@ -37,6 +37,9 @@ struct RepositoryState: Equatable {
 }
 
 enum RepositoryAction: Equatable {
+  case onAppear
+  case dataLoaded(Result<[RepositoryModel], APIError>)
+  case favoriteButtonTapped(RepositoryModel)
 }
 
 struct RepositoryEnvironment {
@@ -46,6 +49,13 @@ let repositoryReducer = Reducer<
   RepositoryState,
   RepositoryAction,
   RepositoryEnvironment
-> { _, _, _ in
-  .none
+> { state, action, env in
+  switch action {
+  case .onAppear:
+    return .none
+  case .dataLoaded(let result):
+    return .none
+  case .favoriteButtonTapped(let repository):
+    return .none
+  }
 }
