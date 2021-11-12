@@ -40,11 +40,9 @@ struct RepositoryListView: View {
   var body: some View {
     WithViewStore(store) { viewStore in
       ScrollView {
-        LazyVStack {
-          ForEach(viewStore.repositories) { repository in
-            RepositoryView(store: store, repository: repository)
-              .padding([.leading, .trailing, .bottom])
-          }
+        ForEach(viewStore.repositories) { repository in
+          RepositoryView(store: store, repository: repository)
+            .padding([.leading, .trailing, .bottom])
         }
         .background(Color("rw-dark")
                       .edgesIgnoringSafeArea([.top, .leading, .trailing]))
@@ -136,10 +134,12 @@ struct RepositoryListView_Previews: PreviewProvider {
     RepositoryListView(
       store: Store(
         initialState: RepositoryState(
-          repositories: [dummyRepo],
+          repositories: [dummyRepo, dummyRepo, dummyRepo, dummyRepo],
           favoriteRepositories: [dummyRepo]
         ),
         reducer: repositoryReducer,
         environment: .dev))
+      .background(Color("rw-dark")
+                    .edgesIgnoringSafeArea(.all))
   }
 }
