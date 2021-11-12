@@ -44,7 +44,6 @@ enum RootAction {
 
 struct RootEnvironment { }
 
-// swiftlint:disable trailing_closure
 let rootReducer = Reducer<RootState, RootAction, SystemEnvironment<RootEnvironment>>.combine(
   userReducer.pullback(
     state: \.userState,
