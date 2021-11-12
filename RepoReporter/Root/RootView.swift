@@ -38,7 +38,15 @@ struct RootView: View {
   var body: some View {
     WithViewStore(self.store.stateless) { _ in
       TabView {
-        Color.clear
+        RepositoryListView(store: Store(
+          initialState: RepositoryState(),
+          reducer: repositoryReducer,
+          environment: RepositoryEnvironment(
+            repositoryRequest: repositoryEffect,
+            mainQueue: DispatchQueue.main.eraseToAnyScheduler,
+            decoder: { JSONDecoder() })))
+          .background(Color("rw-dark")
+                        .edgesIgnoringSafeArea([.leading, .top, .trailing]))
           .tabItem {
             Image(systemName: "list.bullet")
             Text("Repositories")

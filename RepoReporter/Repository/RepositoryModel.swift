@@ -33,17 +33,17 @@
 import Foundation
 
 struct RepositoryModel: Decodable, Equatable {
+  let name: String
+  let description: String?
+  let stars: Int?
+  let forks: Int?
+  let language: String?
+  
   enum CodingKeys: String, CodingKey {
     case name, description, language
     case forks = "forksCount"
     case stars = "stargazersCount"
   }
-
-  let name: String
-  let description: String?
-  let stars: Int
-  let forks: Int
-  let language: String?
 }
 
 extension RepositoryModel: Identifiable {

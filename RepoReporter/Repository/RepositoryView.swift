@@ -101,12 +101,12 @@ struct RepositoryView: View {
         HStack {
           HStack {
             Image(systemName: "star.fill")
-            Text("\(repository.stars)")
+            Text("\(repository.stars ?? 0)")
           }
           Spacer()
           HStack {
             Image(systemName: "arrow.triangle.branch")
-            Text("\(repository.forks)")
+            Text("\(repository.forks ?? 0)")
           }
           Spacer()
           if repository.language != nil {
@@ -125,17 +125,11 @@ struct RepositoryView: View {
 
 struct RepositoryListView_Previews: PreviewProvider {
   static var previews: some View {
-    let dummyRepo = RepositoryModel(
-      name: "Dummy Repo",
-      description: "This is a dummy repo to test the UI.",
-      stars: 10,
-      forks: 10,
-      language: "Swift")
     RepositoryListView(
       store: Store(
         initialState: RepositoryState(
-          repositories: [dummyRepo, dummyRepo, dummyRepo, dummyRepo],
-          favoriteRepositories: [dummyRepo]
+          repositories: [],
+          favoriteRepositories: []
         ),
         reducer: repositoryReducer,
         environment: .dev))
