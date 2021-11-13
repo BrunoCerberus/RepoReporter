@@ -67,7 +67,13 @@ let rootReducer = Reducer<RootState, RootAction, SystemEnvironment<RootEnvironme
       return .none
     case .repositoryAction(let action):
       debugPrint(".repositoryAction executed with \(action)")
-      return .none
+      switch action {
+      case .dataLoaded:
+        debugPrint("FIRST ELEMENT FROM REPO LIST IS \(state.repositoryState.repositories.first?.name ?? "")")
+        return .none
+      default:
+        return .none
+      }
     }
   }
 )
