@@ -35,7 +35,7 @@ import XCTest
 
 @testable import RepoReporter
 
-class RepoReporterTests: XCTestCase {
+final class RepoReporterTests: XCTestCase {
   let testScheduler = DispatchQueue.test
   var testRepositories: [RepositoryModel] {
     [
@@ -53,8 +53,41 @@ class RepoReporterTests: XCTestCase {
   }
 
   func testFavoriteButtonTapped() {
+    
+    let store = TestStore(
+      initialState: RepositoryState(),
+      reducer: repositoryReducer,
+      environment: SystemEnvironment(
+        environment: RepositoryEnvironment(repositoryRequest: testRepositoryEffect),
+        mainQueue: { self.testScheduler.eraseToAnyScheduler() },
+        decoder: { JSONDecoder() }
+      )
+    )
+    
+    guard let testRepo = testRepositories.first else {
+      fatalError("Error in test setup")
+    }
+    
+    store.send(.favoriteButtonTapped(testRepo)) { state in
+      state.favoriteRepositories.append(testRepo)
+    }
   }
 
   func testOnAppear() {
+    let store = TestStore(
+      initialState: RepositoryState(),
+      reducer: repositoryReducer,
+      environment: SystemEnvironment(
+        environment: RepositoryEnvironment(repositoryRequest: testRepositoryEffect),
+        mainQueue: { self.testScheduler.eraseToAnyScheduler() },
+        decoder: { JSONDecoder() }
+      )
+    )
+    
+    store.send(.onAppear)
+    testScheduler.advance()
+    store.receive(.dataLoaded(.success(testRepositories))) { state in
+      state.repositories = self.testRepositories
+    }
   }
 }
