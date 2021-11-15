@@ -68,19 +68,15 @@ let rootReducer = Reducer<RootState, RootAction, SystemEnvironment<RootEnvironme
       
 //    case .repositoryAction(let action):
     case .repositoryAction(.favoriteButtonTapped(_)):
-//      debugPrint(".repositoryAction executed with \(action)")
+      debugPrint("Favorite button was tapped on RepositoryView cell")
       return .none
-      //      switch action {
-      //      case .dataLoaded:
-//              debugPrint("FIRST ELEMENT FROM REPO LIST IS \(state.repositoryState.repositories.first?.name ?? "")")
-      //        return .none
-      //      default:
-      //        return .none
       
     case .repositoryAction(.onAppear):
+      debugPrint("RepositoryListView has appeared")
       return .none
       
     case .repositoryAction(.dataLoaded(let result)):
+      debugPrint("Effect has fetched request and decoded result")
       debugPrint("FIRST ELEMENT FROM REPO LIST IS \(state.repositoryState.repositories.first?.name ?? "")")
       //or
 //      switch result {
@@ -92,4 +88,4 @@ let rootReducer = Reducer<RootState, RootAction, SystemEnvironment<RootEnvironme
       return .none
     }
   }
-  )
+)
