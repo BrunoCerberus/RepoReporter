@@ -68,7 +68,7 @@ let rootReducer = Reducer<RootState, RootAction, SystemEnvironment<RootEnvironme
       
 //    case .repositoryAction(let action):
     case .repositoryAction(.favoriteButtonTapped(_)):
-      debugPrint(".repositoryAction executed with \(action)")
+//      debugPrint(".repositoryAction executed with \(action)")
       return .none
       //      switch action {
       //      case .dataLoaded:
