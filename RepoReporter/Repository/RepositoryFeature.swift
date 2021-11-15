@@ -78,4 +78,3 @@ let repositoryReducer = Reducer<
     return .none
   }
 }
-.debug()

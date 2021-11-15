@@ -33,8 +33,8 @@
 import ComposableArchitecture
 
 struct RootState {
-  var userState = UserState()
-  var repositoryState = RepositoryState()
+  var userState: UserState = UserState()
+  var repositoryState: RepositoryState = RepositoryState()
 }
 
 enum RootAction {
