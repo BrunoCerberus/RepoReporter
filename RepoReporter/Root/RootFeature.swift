@@ -65,15 +65,31 @@ let rootReducer = Reducer<RootState, RootAction, SystemEnvironment<RootEnvironme
     case .userAction(let action):
       debugPrint(".userAction executed with \(action)")
       return .none
-    case .repositoryAction(let action):
+      
+//    case .repositoryAction(let action):
+    case .repositoryAction(.favoriteButtonTapped(_)):
       debugPrint(".repositoryAction executed with \(action)")
-      switch action {
-      case .dataLoaded:
-        debugPrint("FIRST ELEMENT FROM REPO LIST IS \(state.repositoryState.repositories.first?.name ?? "")")
-        return .none
-      default:
-        return .none
-      }
+      return .none
+      //      switch action {
+      //      case .dataLoaded:
+//              debugPrint("FIRST ELEMENT FROM REPO LIST IS \(state.repositoryState.repositories.first?.name ?? "")")
+      //        return .none
+      //      default:
+      //        return .none
+      
+    case .repositoryAction(.onAppear):
+      return .none
+      
+    case .repositoryAction(.dataLoaded(let result)):
+      debugPrint("FIRST ELEMENT FROM REPO LIST IS \(state.repositoryState.repositories.first?.name ?? "")")
+      //or
+//      switch result {
+//      case .success(let repositories):
+//        debugPrint("FIRST ELEMENT FROM REPO LIST IS \(repositories.first?.name ?? "")")
+//      case .failure:
+//        break
+//      }
+      return .none
     }
   }
-)
+  )
