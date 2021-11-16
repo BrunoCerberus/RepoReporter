@@ -66,7 +66,6 @@ let rootReducer = Reducer<RootState, RootAction, SystemEnvironment<RootEnvironme
       debugPrint(".userAction executed with \(action)")
       return .none
       
-//    case .repositoryAction(let action):
     case .repositoryAction(.favoriteButtonTapped(_)):
       debugPrint("Favorite button was tapped on RepositoryView cell")
       return .none
