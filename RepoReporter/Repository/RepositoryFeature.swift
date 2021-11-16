@@ -50,11 +50,7 @@ struct RepositoryEnvironment {
 
 //The mechanism TCA uses for asynchronous calls is Effect
 
-let repositoryReducer = Reducer<
-  RepositoryState,
-  RepositoryAction,
-  SystemEnvironment<RepositoryEnvironment>
-> { state, action, env in
+let repositoryReducer = Reducer<RepositoryState, RepositoryAction, SystemEnvironment<RepositoryEnvironment>> { state, action, env in
   switch action {
   case .onAppear:
     return env.repositoryRequest(env.decoder())
