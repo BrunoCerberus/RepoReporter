@@ -34,7 +34,9 @@ import SwiftUI
 import ComposableArchitecture
 
 struct RootView: View {
+  
   let store: Store<RootState, RootAction>
+  
   var body: some View {
     WithViewStore(self.store.stateless) { _ in
       TabView {
